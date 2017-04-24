@@ -82,7 +82,7 @@ def actualizar_pantalla(sniff_obj):
         print paquete.src + "     ->     " + paquete.dst
 
 usuario = os.popen("whoami").read()
-usuario = usuario[:-1] # saco el backslash del final
+usuario = usuario[:-1] # saco el eol del final
 if usuario != "root":
     print "Correlo con root chabon!"
     exit(1)
