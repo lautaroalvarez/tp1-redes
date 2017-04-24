@@ -81,9 +81,10 @@ def actualizar_pantalla(sniff_obj):
     for paquete in sniff_obj.paquetes[-10:]:
         print paquete.src + "     ->     " + paquete.dst
 
-
-#if os.system("whoami") != "root":
-#    print "Correlo con root chabon!"
-#    exit(1)
+usuario = os.popen("whoami").read()
+usuario = usuario[:-1] # saco el backslash del final
+if usuario != "root":
+    print "Correlo con root chabon!"
+    exit(1)
 ejercicio = raw_input("Ingrese el numero de ejercicio: ")
 sniff_obj = sniffer(ejercicio)
