@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import os, math
+import time
 from operator import truediv
 from scapy.all import *
 
@@ -35,6 +36,8 @@ class sniffer:
             else:
                 #-- ejercicio 2
                 if pkt[ARP].op == WHO_HAS:
+                    simbolo = pkt.src
+                elif pkt[ARP].op == IS_AT:
                     simbolo = pkt.src
             if simbolo != "":
                 self.paquetes.append(pkt)
@@ -73,6 +76,8 @@ def actualizar_pantalla(sniff_obj):
             if probabilidad > 0 and len(sniff_obj.simbolos) > 1:
                 informacion = -math.log(probabilidad, len(sniff_obj.simbolos))
         print simbolo + "               " + str(probabilidad) + "                     " + str(informacion)
+        # escritura en el archivo para el experimentacion
+        os.system("echo "+time.strftime("%H:%M:%S")+","+simbolo+","+str(probabilidad)+","+str(informacion)+","+str(len(sniff_obj.paquetes))+","+str(entropia)+" >> resultado.csv")
     print ""
     print "--------------------------------------------------------------------"
     print "------------------------ ULTIMOS 10 PAQUETES -----------------------"
@@ -87,4 +92,6 @@ if usuario != "root":
     print "Correlo con root chabon!"
     exit(1)
 ejercicio = raw_input("Ingrese el numero de ejercicio: ")
+os.system("echo '' > resultado.csv")
+os.system("echo tiempo,simbolo,probabilidad,informacion,cantidad de paquetes,entropia >> resultado.csv")
 sniff_obj = sniffer(ejercicio)
