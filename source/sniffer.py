@@ -37,8 +37,6 @@ class sniffer:
                 #-- ejercicio 2
                 if pkt[ARP].op == WHO_HAS:
                     simbolo = pkt.src
-                elif pkt[ARP].op == IS_AT:
-                    simbolo = pkt.src
             if simbolo != "":
                 self.paquetes.append(pkt)
                 #-- si no estaba en el diccionario lo crea
