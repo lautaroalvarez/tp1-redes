@@ -10,3 +10,10 @@ Pregunta ejercicio:
 Pregunta también por un id de log: Si se le da este parámetro guarda logs de los paquetes que sniffea y del estado de los hosts cada un cierto tiempo
 
 **Recordar correr con sudo.**
+
+
+#### Para graficar los grafos uso 'dot' (comando linux) de la librería GraphViz
+Si no está instalado tirar
+```
+sudo apt-get install graphviz
+```
