@@ -25,7 +25,7 @@ class sniffer:
             #--vamos a guardar logs
             self.log_id = log_id
             self.log_paquetes = csv.writer(open(self.log_id + "_paquetes.csv", "wb"))
-            self.log_paquetes.writerow(["tiempo", "origen", "destino", "tipo"])
+            self.log_paquetes.writerow(["tiempo", "origen_ip", "origen_mac", "destino_ip", "destino_mac", "modo"])
             self.log_resultados = csv.writer(open(self.log_id + "_resultados.csv", "wb"))
             self.log_resultados.writerow(["tiempo", "simbolo", "probabilidad", "informacion", "cantidad de paquetes", "entropia"])
             self.ultimo_log = time.time()
@@ -49,7 +49,7 @@ class sniffer:
             if simbolo != "":
                 #--guarda logs
                 if self.log_id:
-                    self.log_paquetes.writerow([time.strftime("%H:%M:%S"), pkt[ARP].psrc, pkt[ARP].pdst, "WHO_HAS"])
+                    self.log_paquetes.writerow([time.strftime("%H:%M:%S"), pkt[ARP].psrc, pkt.src, pkt[ARP].pdst, pkt.dst, self.modo])
                 self.paquetes.append(pkt)
                 #-- si no estaba en el diccionario lo crea
                 if simbolo not in self.simbolos.keys():
