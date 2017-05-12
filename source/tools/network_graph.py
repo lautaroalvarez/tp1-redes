@@ -19,7 +19,7 @@ SUMA_DESTINO = 2
 #-- indice de columna del identificador de origen (ip o mac)
 INDEX_ORIGEN = 1
 #-- indice de columna del identificador de destino (ip o mac)
-INDEX_DESTINO = 2
+INDEX_DESTINO = 3
 
 NODO_MAX_HEIGHT = 2
 NODO_MIN_FONTSIZE = 6
