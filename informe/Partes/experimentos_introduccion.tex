@@ -1,0 +1,19 @@
+En el siguiente trabajo pr\'actico se realizar\'a un an\'alisis sobre el tr\'afico de paquetes ARP de una red local WI-FI con el fin de estudiar dos fuentes de informaci\'on. Para recolectar los datos implementamos un \"sniffer\", es decir un programa que toma todos los paquetes de la red. 
+
+\subsection{ARP: Adress Resolution Protocol}
+
+Es el protocolo encargado de \"mapear\" direcciones del nivel 3 al nivel 2. Los paquetes ARP poseen varios campos de informaci\'on pero en este trabajo s\'olo nos van a interesar la direcci\'on MAC e IP destino y fuente y el tipo de mensaje, es decir si es \"who-has\" o \"is-at\".
+Para nuestros experimentos s\'olo nos vamos a enfocar en los paquetes de tipo who-has dado se env\'ian de manera \emph{broadcast} y los is-at son \emph{Unicast}. Cuando un equipo quiere comunicarse con otro env\'ian un paquete ARP de tipo who-has y el equipo buscado responde con un paquete ARP de tipo is-at. Estos env\'ios isrven para que cada equipo arme su propia tabla ARP en la cual asocia direcciones IP con direcciones MAC.
+
+\subsection{Teor\'ia de la informaci\'on}
+
+Para este trabajo vamos a usar la teor\'ia estad\'istica de la informaci\'on (o teor\'ia de Shannon). Nos interesan las siguientes definiciones:
+
+\begin{itemize}
+
+\item Informaci\'on de un suceso: Dado un suceso $i$ de una fuente cuya probabilidad es estrictamente mayor que cero se define su informaci\'on como $c_i = -log(p_i)$ con $p_i$ la probabilidad de que ocurra el suceso $i$. Se puede observar que cuanto menos probable sea un suceso m\'as informaci\'on provee y cuanto m\'as probable sea menos informaci\'on aporta.
+
+\item Entrop\'ia de una fuente: Dada una fuente $S$ se define la entrop\'ia como $H(S) = \sum{i=1}{i=\#(S)} p_i*c_i$ con $c_i$ la informaci\'on del suceso $i$ y $p_i$ su probabilidad. Esta m\'etrica es un promedio ponderado de la informaci\'on que brinda cada suceso.  
+
+\end{itemize}
+
