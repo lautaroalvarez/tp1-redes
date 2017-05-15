@@ -1,0 +1,57 @@
+Red Casera:
+Modelamos los paquetes de la red en dos fuentes de información:
+1. Fuente S\_1 : Definimos los símbolos S\_Broadcast y S\_Unicast, equivalentes a los mensajes Broadcast y Unicast respectivamente. Se diferencian por la "destination adress" de cada paquete, que para Broadcast es ff:ff:ff:ff:ff y es Unicast en caso contrario.
+
+
+
+2.Fuente S\_2: Para la segunda fuente vamos a tomar para cada símbolo un nodo o host distinto, y tomamos en cuenta la cantidad de mensajes WHO-HAS envíados a cada uno de esos nodos.
+	Los mensajes WHO-HAS son los que envía un nodo cuando quiere averiguar cuál es el nodo que tiene determinada dirección IP, y se le responde mediante un mansaje IS-AT.
+Vamos a calcular la información de cada nodo y a compararla con la entropía de la fuente, esto nos va a distinguir nodos.
+
+
+Experimento 1:
+Se escuchó la red durante 3 horas y se capturaron 1904 paquetes.
+\begin{center}
+ \begin{tabular}{||c c c c||} 
+ \hline
+ Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
+ \hline\hline
+ Broadcast & 1845 & 0.96901260504 & 0.045413 \\ 
+ \hline
+ Unicast & 59 & 0.03098739495 & 5.012175 \\[1ex] 
+ \hline
+\end{tabular}
+\end{center}
+La entropía es de 0.19932
+
+Experimento 2:
+Se escuchó la red durante 1 hora y se capturaron 4034 paquetes.
+\begin{center}
+ \begin{tabular}{||c c c c||} 
+ \hline
+ Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
+ \hline\hline
+ Broadcast & 3994 & 0.99008428358 & 0.014377 \\ 
+ \hline
+ Unicast & 40 & 0.00991571641 & 6.656067 \\[1ex] 
+ \hline
+\end{tabular}
+\end{center}
+La entropía es de 0.08023411452
+
+Experimento 3:
+Se escuchó la red durante media hora y se capturaron 1269 paquetes.
+\begin{center}
+ \begin{tabular}{||c c c c||} 
+ \hline
+ Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
+ \hline\hline
+ Broadcast & 1220 & 0.96138691883 & 0.056811 \\ 
+ \hline
+ Unicast & 49 & 0.03861308116 & 4.694767 \\[1ex] 
+ \hline
+\end{tabular}
+\end{center}
+La entropía es de 0.23589677144
+
+
