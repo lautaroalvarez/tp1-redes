@@ -7,3 +7,24 @@ Out[117]: <matplotlib.axes.AxesSubplot at 0x7f0bc7ab4358>
 
 In [118]: plt.show()
 
+
+---------------------------------------------------------------------
+
+Otra tool muy útil cortesía de Matias Millasson:
+
+In [152]: df = pd.read_table('variosHost_resultados.csv',delimiter=',')
+
+In [153]: fig, ax = plt.subplots()
+     ...: labels = []
+     ...: for key, grp in df.groupby(['simbolo']):
+     ...:     ax = grp.plot(ax=ax, kind='line', x='tiempo', y='informacion')
+     ...:     labels.append(key)
+     ...: lines, _ = ax.get_legend_handles_labels()
+     ...: ax.legend(lines, labels, loc='best')
+     ...: 
+     ...: plt.show()
+     ...: 
+
+
+Grafica mal el tiempo, investigar.
+
