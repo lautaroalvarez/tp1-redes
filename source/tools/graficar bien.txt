@@ -1,0 +1,9 @@
+Tools para plotear:
+
+df = pd.DataFrame.from_csv('variosHost_resultados.csv')
+
+In [117]: df.entropia.plot(color='r')
+Out[117]: <matplotlib.axes.AxesSubplot at 0x7f0bc7ab4358>
+
+In [118]: plt.show()
+
