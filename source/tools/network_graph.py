@@ -18,9 +18,9 @@ INDEX_DESTINO = 3
 #-- indice de columna del identificador de modo
 INDEX_MODO = 5
 
-NODO_MAX_HEIGHT = 3
-NODO_MIN_FONTSIZE = 20
-NODO_MAX_FONTSIZE = 50
+NODO_MAX_HEIGHT = 2
+NODO_MIN_FONTSIZE = 10
+NODO_MAX_FONTSIZE = 20
 
 ARISTA_MIN_WIDTH = 0.2
 ARISTA_MAX_WIDTH = 3
@@ -45,6 +45,7 @@ class graficador:
         self.filtra_limite = False
 
         self.maxima_importancia = 0
+        self.maximo_peso_arista = 0
         self.importarDatos()
 
     def importarDatos(self):
@@ -138,6 +139,14 @@ class graficador:
         for ip_obligada in NODOS_OBLIGATORIOS:
             self.nodos_a_mostrar.append(ip_obligada)
 
+    def calcularMaximoPeso(self):
+        #- calcula el maximo peso (dentro de los)
+        for origen_ip in self.aristas:
+            for destino_ip in self.aristas[origen_ip]['aristas']:
+                if not self.filtra_limite or (origen_ip in self.nodos_a_mostrar and destino_ip in self.nodos_a_mostrar):
+                    if self.maximo_peso_arista < self.aristas[origen_ip]['aristas'][destino_ip]['peso']:
+                        self.maximo_peso_arista = self.aristas[origen_ip]['aristas'][destino_ip]['peso']
+
     def exportarGrafo(self, output_file):
         f = open('graph.tmp','w')
         f.writelines('digraph G {\n')
@@ -153,7 +162,7 @@ class graficador:
                 if not self.filtra_limite or (origen_ip in self.nodos_a_mostrar and destino_ip in self.nodos_a_mostrar):
                     #-- calcula ancho de aristas1
                     peso_arista = self.aristas[origen_ip]['aristas'][destino_ip]['peso']
-                    width = (peso_arista * (ARISTA_MAX_WIDTH - ARISTA_MIN_WIDTH) / self.maxima_importancia) + ARISTA_MIN_WIDTH
+                    width = (peso_arista * (ARISTA_MAX_WIDTH - ARISTA_MIN_WIDTH) / self.maximo_peso_arista) + ARISTA_MIN_WIDTH
                     f.writelines('"' + origen_ip + '" -> "' + destino_ip + '" [dir=none,penwidth=' + str(width) + ',color=' + ARISTA_COLOR + '];\n')
         f.writelines('}')
         f.close()
@@ -169,4 +178,5 @@ graficador_obj = graficador(input_file, MODO_HOSTS)
 graficador_obj.calcularImportancia()
 if limite != '':
     graficador_obj.filtrarCantidad(int(limite))
+graficador_obj.calcularMaximoPeso()
 graficador_obj.exportarGrafo(output_file)

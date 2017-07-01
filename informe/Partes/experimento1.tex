@@ -1,57 +1,31 @@
-Red Casera:
-Modelamos los paquetes de la red en dos fuentes de información:
-1. Fuente S\_1 : Definimos los símbolos S\_Broadcast y S\_Unicast, equivalentes a los mensajes Broadcast y Unicast respectivamente. Se diferencian por la "destination adress" de cada paquete, que para Broadcast es ff:ff:ff:ff:ff y es Unicast en caso contrario.
+\section{Primera captura: Laboratorio de Pabellón 1}
 
+\par Para una primera experimentación, decidimos correr la herramienta sniffer en la red interna del pabellón 1 de Ciudad Universitaria. Nos conectamos por Wifi a la red y tomamos muestras durante 17 minutos. Utilizamos la fuente de información S1 para diferenciar cada host como un símbolo. Luego, calculamos la información de cada host y con esto, la entropía de la fuente (red).
 
+\par En el gráfico \ref{fig:exp1_labo_infovsentro} se pueden ver los 25 hosts con menor información. La linea punteada roja representa la entropía de la fuente y, como se observa rápidamente, hay un solo host que se encuentra del lado izquierdo (\textbf{10.210.210.199}). Esto significa que es un símbolo con muy poca información y por ende, mucha probabilidad. Para nosotros, esto significa que es un host que participa mucho de la red, preguntando constantemente qué dirección MAC corresponde a una dirección IP. Tomamos entonces a este host como un nodo distinguido de la red.
 
-2.Fuente S\_2: Para la segunda fuente vamos a tomar para cada símbolo un nodo o host distinto, y tomamos en cuenta la cantidad de mensajes WHO-HAS envíados a cada uno de esos nodos.
-	Los mensajes WHO-HAS son los que envía un nodo cuando quiere averiguar cuál es el nodo que tiene determinada dirección IP, y se le responde mediante un mansaje IS-AT.
-Vamos a calcular la información de cada nodo y a compararla con la entropía de la fuente, esto nos va a distinguir nodos.
+\begin{figure}[h]
+  \begin{subfigure}[b]{.5\textwidth}
+    \includegraphics[width=\textwidth]{imagenes/laboratorio/informaciones_vs_entropia.png}
+  \end{subfigure}
+  \label{fig:exp1_labo_infovsentro}
+  \caption{Información de cada símbolo (host) de la red comparada con el valor de la entropía de la fuente de información (red local). Se limita el gráfico a los 25 símbolos con menor valor de información.}
+\end{figure}
 
+\par La distinción del host con IP \textbf{10.210.210.199} la podemos corroborar en el gráfico de la figura \ref{fig:exp1_labo_grafo}. Este grafo representa a la red relacionando nodos con hosts y aristas con mensajes. El diámetro de los nodos está dado por el nivel de participación que tiene en las capturas tomada. Este valor fue calculado teniendo en cuenta los siguientes parámetros:
+\begin{itemize}
+	\item Cantidad de mensajes ARP enviados (solo tomando los del tipo who-has).
+	\item Cantidad de mensajes ARP que consultaban por su ip (solo tomando los del tipo who-has).
+	\item Cantidad de hosts \textit{distintos} por los cuales preguntó su dirección MAC.
+	\item Cantidad de hosts \textit{distintos} que preguntaron por mi dirección MAC.
+\end{itemize}
+\par Las aristas por su parte, representan la consulta de un host por la dirección MAC de otro (sin diferenciar la dirección de los mensajes). Y el peso de cada arista (expresado como grosor) está dado por la cantidad de mensajes que relacionan los hosts.
 
-Experimento 1:
-Se escuchó la red durante 3 horas y se capturaron 1904 paquetes.
-\begin{center}
- \begin{tabular}{||c c c c||} 
- \hline
- Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
- \hline\hline
- Broadcast & 1845 & 0.96901260504 & 0.045413 \\ 
- \hline
- Unicast & 59 & 0.03098739495 & 5.012175 \\[1ex] 
- \hline
-\end{tabular}
-\end{center}
-La entropía es de 0.19932
-
-Experimento 2:
-Se escuchó la red durante 1 hora y se capturaron 4034 paquetes.
-\begin{center}
- \begin{tabular}{||c c c c||} 
- \hline
- Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
- \hline\hline
- Broadcast & 3994 & 0.99008428358 & 0.014377 \\ 
- \hline
- Unicast & 40 & 0.00991571641 & 6.656067 \\[1ex] 
- \hline
-\end{tabular}
-\end{center}
-La entropía es de 0.08023411452
-
-Experimento 3:
-Se escuchó la red durante media hora y se capturaron 1269 paquetes.
-\begin{center}
- \begin{tabular}{||c c c c||} 
- \hline
- Simbolo & Cantidad & Probabilidad & Informacion \\ [0.5ex] 
- \hline\hline
- Broadcast & 1220 & 0.96138691883 & 0.056811 \\ 
- \hline
- Unicast & 49 & 0.03861308116 & 4.694767 \\[1ex] 
- \hline
-\end{tabular}
-\end{center}
-La entropía es de 0.23589677144
-
-
+\begin{figure*}[ht]
+  \hspace*{-0.5cm}
+  \begin{subfigure}[b]{1.1\textwidth}
+    \includegraphics[width=\textwidth]{imagenes/laboratorio/grafo_10.png}
+  \end{subfigure}
+	\label{fig:exp1_labo_grafo}
+	\caption{Grafo con los nodos mas interesantes de la red de la primer captura. El diámetro del nodo implica mayor participación.}
+\end{figure*}
