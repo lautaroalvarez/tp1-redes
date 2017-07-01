@@ -9,7 +9,7 @@ INDEX_DESTINO_IP = 3
 INDEX_MODO = 5
 MODO_BRvsUN = 1
 MODO_HOSTS = 2
-IPS_MALAS = ['0.0.0.0', 'Broadcast', 'Unicast', '10.210.210.199']
+IPS_MALAS = ['0.0.0.0', 'Broadcast', 'Unicast']
 
 class Graficador():
     def __init__(self, archivo_entrada, limite):
