@@ -52,12 +52,16 @@
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
-\fancyhead[C]{Teoría de las comunicaciones $\bullet$ Mayo 2017} % Custom header text
+\fancyhead[C]{Teoría de las comunicaciones $\bullet$ Julio 2017} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
 \usepackage{titling} % Customizing the title section
 
 \usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{color, colortbl}
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
@@ -69,7 +73,6 @@
 \posttitle{\end{center}} % Article title closing formatting
 \title{TP1: Wiretapping} % Article title
 \author{
-\textsc{Fabio Seminara} \\
 \textsc{Matías Millassón} \\
 \textsc{Lautaro Leonel Alvarez} \\
 \\
@@ -78,7 +81,7 @@
 \date{\today} % Leave empty to omit a date
 \renewcommand{\maketitlehookd}{
 \begin{abstract}
-\noindent Una descripción corta del tp, de qué vamos a explicar y sobre qué experimentamos.
+\noindent TODO: Una descripción corta del tp, de qué vamos a explicar y sobre qué experimentamos.
 \end{abstract}
 }
 
@@ -97,17 +100,12 @@
 %\input{Partes/capturando.tex}
 
 %\section{Analizando los paquetes capturados}
-\section{Introducci\'on}
 \input{Partes/experimentos_introduccion.tex}
 
-\subsection{Experimento 1}
 \input{Partes/experimento1.tex}
-\subsection{Experimento 2}
 \input{Partes/experimento2.tex}
-\subsection{Experimento 3}
 \input{Partes/experimento3.tex}
 
-\section{Conclusiones}
 \input{Partes/conclusiones.tex}
 
 

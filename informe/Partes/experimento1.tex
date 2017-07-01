@@ -19,7 +19,8 @@
 	\item Cantidad de hosts \textit{distintos} por los cuales preguntó su dirección MAC.
 	\item Cantidad de hosts \textit{distintos} que preguntaron por mi dirección MAC.
 \end{itemize}
-\par Las aristas por su parte, representan la consulta de un host por la dirección MAC de otro (sin diferenciar la dirección de los mensajes). Y el peso de cada arista (expresado como grosor) está dado por la cantidad de mensajes que relacionan los hosts.
+\par Las aristas por su parte, representan la consulta de un host por la dirección MAC de otro (sin diferenciar la dirección de los mensajes). Y el peso de cada arista (relacionado con el grosor) está dado por la cantidad de mensajes que relacionan a los hosts.
+\par De este grafo, podemos extraer información sobre el host con IP \textbf{}
 
 \begin{figure*}[ht]
   \hspace*{-0.5cm}
@@ -29,3 +30,30 @@
 	\label{fig:exp1_labo_grafo}
 	\caption{Grafo con los nodos mas interesantes de la red de la primer captura. El diámetro del nodo implica mayor participación.}
 \end{figure*}
+
+\begin{figure}[h]
+	\begin{tabular}{| c | c | c |}
+		\hline
+		& \textbf{10.210.210.199} & \textbf{10.210.126.212}  \\ \hline
+		\textbf{10.210.210.199} & - & 121 \\ \hline
+		\textbf{10.210.126.212} & 0 & - \\ \hline
+	\end{tabular}
+  \label{fig:exp1_labo_comparativanodos}
+  \caption{Cantidad de mensajes ARP enviados entre dos hosts de la red. A la izquierda se encuentran los nodos origen, mientras que arriba los nodos destino.}
+\end{figure}
+
+\par Cosas para hablar:
+\par Mensajes que recibio el host 10.210.126.212
+\par - Cantidad total: 121
+\par - Distintos hosts: 1
+\par Mensajes que recibio el host 10.210.210.199
+\par - Cantidad total: 973
+\par - Distintos hosts: 268
+\par Mensajes que envio el host 10.210.126.212
+\par - Cantidad total: 151
+\par - Distintos hosts: 101
+\par Mensajes que envio el host 10.210.210.199
+\par - Cantidad total: 5796
+\par - Distintos hosts: 298
+\\
+\newpage
