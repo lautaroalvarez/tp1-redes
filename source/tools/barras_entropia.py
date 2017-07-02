@@ -6,23 +6,31 @@ import numpy as np
 
 INDEX_ORIGEN_IP = 1
 INDEX_DESTINO_IP = 3
+INDEX_DESTINO_MAC = 4
 INDEX_MODO = 5
 MODO_BRvsUN = 1
 MODO_HOSTS = 2
-IPS_MALAS = ['0.0.0.0', 'Broadcast', 'Unicast']
+IPS_MALAS_MODO_HOSTS = ['0.0.0.0', 'Broadcast', 'Unicast']
+MAC_BROADCAST = "ff:ff:ff:ff:ff:ff"
 
 class Graficador():
-    def __init__(self, archivo_entrada, limite):
+    def __init__(self, archivo_entrada, modo, limite):
         self.archivo_entrada = archivo_entrada
         self.limite = 0
         if limite != '':
             self.limite = int(limite)
+        self.modo = int(modo)
         self.cant_paquetes = 0
-        self.hosts = {}
+        self.simbolos = {}
+        if self.modo == MODO_BRvsUN:
+            self.simbolos['Broadcast'] = {}
+            self.simbolos['Broadcast']['cant_paquetes'] = 0
+            self.simbolos['Unicast'] = {}
+            self.simbolos['Unicast']['cant_paquetes'] = 0
         self.leer_entrada()
         self.calcular_probabilidades()
         self.calcular_entropia()
-        # self.mostrar_hosts()
+        # self.mostrar_simbolos()
         self.graficar_barras()
 
     def leer_entrada(self):
@@ -32,66 +40,79 @@ class Graficador():
             for paquete in lector:
                 if primera_linea:
                     primera_linea = 0
-                elif int(paquete[INDEX_MODO]) == MODO_HOSTS and paquete[INDEX_ORIGEN_IP] not in IPS_MALAS:
+                elif self.modo == MODO_HOSTS and int(paquete[INDEX_MODO]) == MODO_HOSTS and paquete[INDEX_ORIGEN_IP] not in IPS_MALAS_MODO_HOSTS:
                     self.cant_paquetes += 1
-                    if paquete[INDEX_ORIGEN_IP] not in self.hosts.keys():
-                        self.hosts[paquete[INDEX_ORIGEN_IP]] = {}
-                        self.hosts[paquete[INDEX_ORIGEN_IP]]['cant_paquetes'] = 0
-                    self.hosts[paquete[INDEX_ORIGEN_IP]]['cant_paquetes'] += 1
+                    if paquete[INDEX_ORIGEN_IP] not in self.simbolos.keys():
+                        self.simbolos[paquete[INDEX_ORIGEN_IP]] = {}
+                        self.simbolos[paquete[INDEX_ORIGEN_IP]]['cant_paquetes'] = 0
+                    self.simbolos[paquete[INDEX_ORIGEN_IP]]['cant_paquetes'] += 1
+                elif self.modo == MODO_BRvsUN and int(paquete[INDEX_MODO]) == MODO_BRvsUN:
+                    self.cant_paquetes += 1
+                    simbolo = 'Unicast'
+                    if paquete[INDEX_DESTINO_MAC] == MAC_BROADCAST:
+                        simbolo = 'Broadcast'
+                    self.simbolos[simbolo]['cant_paquetes'] += 1
 
     def calcular_probabilidades(self):
-        cant_hosts = len(self.hosts.keys())
-        for ip in self.hosts.keys():
-            self.hosts[ip]['probabilidad'] = truediv(self.hosts[ip]['cant_paquetes'], self.cant_paquetes)
-            self.hosts[ip]['informacion'] = - math.log(self.hosts[ip]['probabilidad'], cant_hosts)
+        cant_simbolos = len(self.simbolos.keys())
+        for simbolo_id in self.simbolos.keys():
+            self.simbolos[simbolo_id]['probabilidad'] = truediv(self.simbolos[simbolo_id]['cant_paquetes'], self.cant_paquetes)
+            if self.simbolos[simbolo_id]['probabilidad'] == 0:
+                self.simbolos[simbolo_id]['informacion'] = 1
+            else:
+                self.simbolos[simbolo_id]['informacion'] = - math.log(self.simbolos[simbolo_id]['probabilidad'], cant_simbolos)
 
     def calcular_entropia(self):
         self.entropia = 0
-        cant_hosts = len(self.hosts.keys())
-        for ip in self.hosts.keys():
-            self.entropia += self.hosts[ip]['probabilidad'] * self.hosts[ip]['informacion']
+        cant_hosts = len(self.simbolos.keys())
+        for simbolo_id in self.simbolos.keys():
+            self.entropia += self.simbolos[simbolo_id]['probabilidad'] * self.simbolos[simbolo_id]['informacion']
 
-    def mostrar_hosts(self):
-        for ip in self.hosts.keys():
-            print str(ip) + " -> " + str(self.hosts[ip]['probabilidad']) + '  -  ' + str(self.hosts[ip]['informacion'])
+    def mostrar_simbolos(self):
+        for simbolo_id in self.simbolos.keys():
+            print str(simbolo_id) + " -> " + str(self.simbolos[simbolo_id]['probabilidad']) + '  -  ' + str(self.simbolos[simbolo_id]['informacion'])
         print ''
         print 'ENTROPIA: ' + str(self.entropia)
 
     def graficar_barras(self):
-        tuplas_hosts = []
-        for ip in self.hosts.keys():
-            tuplas_hosts.append((ip, self.hosts[ip]['informacion']))
+        tuplas_simbolos = []
+        for simbolo_id in self.simbolos.keys():
+            tuplas_simbolos.append((simbolo_id, self.simbolos[simbolo_id]['informacion']))
         # ordena por informacion
-        tuplas_hosts = sorted(tuplas_hosts, key=lambda x: x[1])
+        tuplas_simbolos = sorted(tuplas_simbolos, key=lambda x: x[1])
 
         if self.limite > 0:
-            tuplas_hosts = tuplas_hosts[:self.limite]
+            tuplas_simbolos = tuplas_simbolos[:self.limite]
 
-        ips = []
+        ids = []
         infos = []
         numeracion = []
         cont = 0
-        for host in tuplas_hosts:
-            ips.append(host[0])
-            infos.append(host[1])
+        for simbolo in tuplas_simbolos:
+            ids.append(simbolo[0])
+            infos.append(simbolo[1])
             numeracion.append(cont)
             cont += 1
 
         fig, ax = plt.subplots()
         ax.set_xlim([min(infos) - 0.03 * abs(max(infos)-min(infos)), max(infos) + 0.03 * abs(max(infos)-min(infos))])
-        ax.set_ylim([-1, len(ips)])
+        ax.set_ylim([-1, len(ids)])
         ax.barh(numeracion, infos, align='center')
         ax.set_yticks(numeracion)
-        ax.set_yticklabels(ips, fontsize=17)
+        ax.set_yticklabels(ids, fontsize=17)
         ax.invert_yaxis()
         ax.set_xlabel('Informacion', fontsize=14)
-        ax.set_title('Informacion por host vs Entropia de la fuente', fontsize=16)
+        ax.set_title('Informacion por simbolo vs Entropia de la fuente', fontsize=16)
         sns.set_style("darkgrid")
         box = ax.get_position()
         ax.set_position([0.25, box.y0, box.width - 0.05, box.height])
-        ax.plot([self.entropia, self.entropia], [-1, len(ips)], "r--")
+        ax.plot([self.entropia, self.entropia], [-1, len(ids)], "r--")
         plt.show()
 
 archivo_entrada = raw_input("Ingrese el archivo de paquetes: ")
 limite = raw_input("Ingrese la cantidad maxima de hosts (ENTER: sin limite): ")
-graph = Graficador(archivo_entrada, limite)
+print 'Modos:'
+print '1. Broadcast vs Unicast'
+print '2. Hosts'
+modo = raw_input("Ingrese el modo: ")
+graph = Graficador(archivo_entrada, modo, limite)
