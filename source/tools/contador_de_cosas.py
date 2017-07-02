@@ -78,8 +78,8 @@ class Contador():
             print text
         print '\\end{tabular}'
 
-    def mostrar_recibidos_de_host(self, listar_hosts, host):
-        print 'Mensajes que recibio el host ' + host
+    def mostrar_preguntas_por(self, listar_hosts, host):
+        print 'Mensajes de hosts que preguntaron por el host ' + host
         total = 0
         for origen_ip in self.hosts[host]['mensajes_de']:
             total += self.hosts[host]['mensajes_de'][origen_ip]
@@ -88,7 +88,7 @@ class Contador():
         print 'Cantidad total: ' + str(total)
         print 'Distintos hosts: ' + str(len(self.hosts[host]['mensajes_de']))
 
-    def mostrar_enviados_de_host(self, listar_hosts, host):
+    def mostrar_preguntas_de(self, listar_hosts, host):
         print 'Mensajes que envio el host ' + host
         total = 0
         for destino_ip in self.hosts[host]['mensajes_a']:
@@ -98,11 +98,52 @@ class Contador():
         print 'Cantidad total: ' + str(total)
         print 'Distintos hosts: ' + str(len(self.hosts[host]['mensajes_a']))
 
+    def mostrar_preguntas_en_comun(self, listar_hosts, hosts):
+        texto = 'Host por los cuales preguntaron'
+        for ip in hosts:
+            texto += ' - ' + ip
+        print texto
+        total = 0
+        host = hosts[0]
+        hosts_en_comun = []
+        for destino_ip in self.hosts[host]['mensajes_a']:
+            comun = True
+            for host_ip in hosts:
+                if destino_ip not in self.hosts[host_ip]['mensajes_a'].keys():
+                    comun = False
+            if comun:
+                hosts_en_comun.append(destino_ip)
+            if listar_hosts:
+                print '  ' + destino_ip
+        print 'Cantidad total: ' + str(len(hosts_en_comun))
+
+    def mostrar_host_que_preguntaron_por_todos(self, listar_hosts, hosts):
+        texto = 'Host que preguntaron por todos los hostsde la lista'
+        for ip in hosts:
+            texto += ' - ' + ip
+        print texto
+        total = 0
+        host = hosts[0]
+        hosts_en_comun = []
+        for origen_ip in self.hosts[host]['mensajes_de']:
+            comun = True
+            for host_ip in hosts:
+                if origen_ip not in self.hosts[host_ip]['mensajes_de'].keys():
+                    comun = False
+            if comun:
+                hosts_en_comun.append(origen_ip)
+            if listar_hosts:
+                print '  ' + origen_ip
+        print 'Cantidad total: ' + str(len(hosts_en_comun))
+
+
 archivo_entrada = raw_input("Ingrese el archivo de paquetes: ")
 contador = Contador(archivo_entrada)
 # hosts_a_ver = ['10.210.210.199', '10.210.126.212']
 # contador.envios_entre_hosts(hosts_a_ver)
-contador.mostrar_recibidos_de_host(False, '10.210.126.212')
-contador.mostrar_recibidos_de_host(False, '10.210.210.199')
-contador.mostrar_enviados_de_host(False, '10.210.126.212')
-contador.mostrar_enviados_de_host(False, '10.210.210.199')
+# contador.mostrar_preguntas_por(False, '10.210.126.212')
+# contador.mostrar_preguntas_por(False, '10.210.210.199')
+# contador.mostrar_preguntas_de(False, '10.210.126.212')
+# contador.mostrar_preguntas_de(False, '10.210.210.199')
+contador.mostrar_preguntas_en_comun(False, ['10.210.210.199', '10.210.126.212'])
+contador.mostrar_host_que_preguntaron_por_todos(False, ['10.210.210.199', '10.210.126.212'])
