@@ -25,3 +25,39 @@ En el gráfico de barras en el que se compara la información de cada símbolo l
   \caption{Información de cada símbolo (Broadcast / Unicast) comparada con el valor de la entropía de la fuente de información (red local).}
 \end{figure}
 
+
+\section{Cuarta captura: red intermedia}
+En este último experimento ejecutamos nuestro sniffer en una casa de comidas rápidas muy concurrida. La red es más grande que una hogareña pero más pequeña que la presentada en el primer experimento. La captura duró aproximadamente media hora.
+
+\subsection{Resultados y análisis}
+Como esta red posee muchísimos nodos decidimos realizar el gráfico con los que tienen menor información, en el mismo se pueden ver que hay algunos hosts con menos información que la entropía, mientras que hay otros que no, pero en realidad todo los hosts restantes, es decir los que no fueron incluidos en el gráfico, tienen una información mayor. El host de la ip terminada en 110 es la puerta de enlace predeterminada, lo cual es lógico que tenga mucha interacción con otros hosts. En la red hubo en total 127 hosts. Mientras, en el gráfico de barras en el que se compara la información de los paquetes broadcast contra la de los paquetes unicast se puede ver que hubo una gran diferencia a favor de la cantidad de paquetes broadcast en cuanto a paquetes enviados. Esto es súmamente razonable ya que la gran mayoría de los dispositivos conectados a la red son clientes.
+
+\begin{figure}[h]
+  \begin{subfigure}{.5\textwidth}
+    \includegraphics[width=\textwidth]{imagenes/mc/mchosts.png}
+  \end{subfigure}
+  \label{fig:exp4_hosts_infovsentro}
+  \caption{Información de cada símbolo (host) comparada con el valor de la entropía de la fuente de información (red local).}
+\end{figure}
+
+
+\begin{figure}[h]
+  \begin{subfigure}{.5\textwidth}
+    \includegraphics[width=\textwidth]{imagenes/mc/mcbrvsuni.png}
+  \end{subfigure}
+  \label{fig:exp4_univsbr_infovsentro}
+  \caption{Información de cada símbolo (Broadcast / Unicast) comparada con el valor de la entropía de la fuente de información (red local).}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{subfigure}{.5\textwidth}
+    \includegraphics[width=\textwidth]{imagenes/mc/mcRed.png}
+  \end{subfigure}
+  \label{fig:exp1_labo_red}
+  \caption{Diagrama de cómo creemos que está organizada la red de la cuarta captura.}
+\end{figure}
+
+
+\subsection{Conclusiones}
+
+
