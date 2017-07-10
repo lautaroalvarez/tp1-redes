@@ -94,8 +94,11 @@ class Graficador():
             numeracion.append(cont)
             cont += 1
 
+        entropia_max = truediv(1,len(self.simbolos.keys()))
+        print entropia_max
+
         fig, ax = plt.subplots()
-        ax.set_xlim([min(infos) - 0.03 * abs(max(infos)-min(infos)), max(infos) + 0.03 * abs(max(infos)-min(infos))])
+        ax.set_xlim([min(min(infos) - 0.03 * abs(max(infos)-min(infos)), 0), max(infos) + 0.03 * abs(max(infos)-min(infos))])
         ax.set_ylim([-1, len(ids)])
         ax.barh(numeracion, infos, align='center')
         ax.set_yticks(numeracion)
@@ -107,6 +110,7 @@ class Graficador():
         box = ax.get_position()
         ax.set_position([0.25, box.y0, box.width - 0.05, box.height])
         ax.plot([self.entropia, self.entropia], [-1, len(ids)], "r--")
+        ax.plot([entropia_max, entropia_max], [-1, len(ids)], "g--")
         plt.show()
 
 archivo_entrada = raw_input("Ingrese el archivo de paquetes: ")
