@@ -35,23 +35,21 @@ class sniffer:
 
     def recibir_paquete(self, pkt):
         if ARP in pkt: # es arp
-            simbolo = ""
-            #-- ejercicio 1
+            #-- FUENTE S: ejercicio 1
+            simbolo = SIMBOLO_UNICAST
             if pkt.dst == MAC_BROADCAST:
                 simbolo = SIMBOLO_BROADCAST
-            else:
-                simbolo = SIMBOLO_UNICAST
-            if simbolo != "":
-                #--guarda logs
-                if self.log_id:
-                    self.log_paquetes.writerow([time.strftime("%H:%M:%S"), pkt[ARP].psrc, pkt.src, pkt[ARP].pdst, pkt.dst,1])
-                self.paquetes.append(pkt)
-                #-- si no estaba en el diccionario lo crea
-                if simbolo not in self.simbolos.keys():
-                    self.simbolos[simbolo] = 0
-                #-- se suma el paquete
-                self.simbolos[simbolo] += 1
-            #-- ejercicio 2
+            #--guarda logs
+            if self.log_id:
+                self.log_paquetes.writerow([time.strftime("%H:%M:%S"), pkt[ARP].psrc, pkt.src, pkt[ARP].pdst, pkt.dst,1])
+            self.paquetes.append(pkt)
+            #-- si no estaba en el diccionario lo crea
+            if simbolo not in self.simbolos.keys():
+                self.simbolos[simbolo] = 0
+            #-- se suma el paquete
+            self.simbolos[simbolo] += 1
+
+            #-- FUENTE S1: ejercicio 2
             if pkt[ARP].op == WHO_HAS:
                 simbolo = pkt[ARP].psrc
                 #--guarda logs
@@ -82,7 +80,6 @@ def actualizar_pantalla(sniff_obj):
     if len(sniff_obj.paquetes) > 0 and len(sniff_obj.simbolos) > 1:
         entropia = 0
         entropiaUniBro = 0
-        print sniff_obj.simbolos
         for i in range(0, len(sniff_obj.simbolos)):
             simbolo = sniff_obj.simbolos.keys()[i]
             if i < 2:
